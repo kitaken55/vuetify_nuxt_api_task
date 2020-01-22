@@ -78,10 +78,11 @@ export default {
         .then(object => {
             if (object.token) {
                 alert("ログインしました");
-                localStorage.token = object.token;
-                localStorage.id = object.id;
-                localStorage.name = object.name;
-                localStorage.bio = object.bio;
+                this.changMessage(object.token,object.id,object.name,object.bio)
+                // localStorage.token = object.token;
+                // localStorage.id = object.id;
+                // localStorage.name = object.name;
+                // localStorage.bio = object.bio;
                 this.$router.push('/users');
             } else {
                 alert("存在しないアカウントです。");
@@ -90,6 +91,9 @@ export default {
         .catch(error => {
             alert(error);
         });
+    },
+    changMessage(token,id,name,bio) {
+        this.$store.commit("changeLocalStorage", token, id, name, bio);
     }
   }
 }

@@ -1,18 +1,19 @@
 export const state = () => ({
-    message1: '',
-    message2: '',
-    count: 0
+    token: "",
+    id: "",
+    name: "",
+    bio: "",
 })
 
 export const mutations = {
     increment(state) {
         state.count += 2
     },
-    changMessage(state, message1_input1) {
-        state.message1 = message1_input1
-    },
-    changeMessage2(state,message2_input2) {
-        state.message1 = message2_input2
+    changeLocalStorage(state, token, id, name, bio) {
+        state.token = token;
+        state.id = id;
+        state.name = name;
+        state.bio = bio;
     }
 }
 

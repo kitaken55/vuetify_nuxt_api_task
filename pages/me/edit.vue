@@ -23,38 +23,10 @@
           :counter="256"
           required
         ></v-text-field>
+        <p>{{ this.$store.state.token }}</p>
       </v-form>
     </v-card-text>
     <hr>
-
-    <!-- テストしてるところ -->
-    <v-form>
-        <v-text-field
-          name="name"
-          label="テスト"
-          type="text"
-          :counter="256"
-          v-model="test2"
-          required
-          :placeholder="test2"
-        ></v-text-field>
-      <p>{{ $store.state.message1 }}</p>
-      <button @click="changMessage">ボタン1</button>
-    </v-form>
-
-      <v-form>
-        <v-text-field
-          name="name"
-          label="テスト"
-          type="text"
-          :counter="256"
-          v-model="test3"
-          required
-          :placeholder="test3"
-        ></v-text-field>
-        <p>{{ $store.state.message2 }}</p>
-        <button @click="changMessage2">ボタン2</button>
-      </v-form>
 
 
 
@@ -70,8 +42,6 @@ export default {
         return {
             name: "",
             bio: "",
-            test2: this.$store.state.message1,
-            test3: this.$store.state.message2
         }
     },
     methods: {
@@ -79,10 +49,7 @@ export default {
             this.$store.commit("increment");
         },
         changMessage() {
-            this.$store.commit("changMessage", this.test2);
-        },
-        changMessage2() {
-            this.$store.commit("changMessage2", this.test3);
+            this.$store.commit("changMessage", this.name);
         }
         // editUser() {
         //     axios.put(`users/${localStorage.id}`,
