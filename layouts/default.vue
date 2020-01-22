@@ -120,7 +120,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'API課題'
+      title: 'vue'
     }
   }
 }
