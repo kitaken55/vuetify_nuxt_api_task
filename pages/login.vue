@@ -38,8 +38,10 @@
         ></v-text-field>
       </v-form>
     </v-card-text>
-    <div class="login-btn">
-      <v-btn block color="primary" @click="loginUsers" :loading="loading">ログイン</v-btn>
+
+    <div class="login-btn text-right btn-margin">
+      <!-- <v-spacer /> -->
+      <v-btn color="primary" @click="loginUsers" :loading="loading">ログイン</v-btn>
     </div>
   </v-card>
 </template>
@@ -79,10 +81,6 @@ export default {
             if (object.token) {
                 alert("ログインしました");
                 this.changMessage(object.token,object.id,object.name,object.bio)
-                // localStorage.token = object.token;
-                // localStorage.id = object.id;
-                // localStorage.name = object.name;
-                // localStorage.bio = object.bio;
                 this.$router.push('/users');
             } else {
                 alert("存在しないアカウントです。");
@@ -93,7 +91,12 @@ export default {
         });
     },
     changMessage(token,id,name,bio) {
-        this.$store.commit("changeLocalStorage", token, id, name, bio);
+        this.$store.commit("store/changeLocalStorage", {
+          token,
+          id,
+          name,
+          bio
+          });
     }
   }
 }

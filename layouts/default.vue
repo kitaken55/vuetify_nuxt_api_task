@@ -110,6 +110,11 @@ export default {
         },
         {
           icon: 'mdi-account',
+          title: 'ユーザー編集',
+          to: '/me/edit'
+        },
+        {
+          icon: 'mdi-account',
           title: 'テスト',
           to: '/test'
         },
@@ -117,7 +122,17 @@ export default {
           icon: 'mdi-account',
           title: 'ユーザー表示',
           to: '/users'
-        }
+        },
+        {
+          icon: 'mdi-account',
+          title: '自分の投稿',
+          to: '/me/timeline'
+        },
+        {
+          icon: 'mdi-account',
+          title: 'みんなのタイムライン',
+          to: '/timeline/all'
+        },
       ],
       miniVariant: false,
       right: true,
