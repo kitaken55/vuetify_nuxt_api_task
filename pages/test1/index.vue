@@ -1,27 +1,27 @@
 <template>
   <div>
     <article v-if="article">
-      <h1>{{ article.title }}</h1>
-      <p>{{ article.content }}</p>
+      <h1>{{ article.name }}</h1>
+      <p>{{ article.bio }}</p>
     </article>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      article01: this.$cookies.get('article01')
-    }
+      article01: this.$cookies.get("article01")
+    };
   },
   computed: {
     article() {
-      let post
+      let post;
       if (this.article01) {
-        post = JSON.parse(this.article01)
+        post = JSON.parse(this.article01);
       }
-      return post
+      return post;
     }
   }
-}
+};
 </script>

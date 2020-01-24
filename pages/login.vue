@@ -1,10 +1,10 @@
 <template>
-  <v-card class="elevation-1 pa-3 login-card">
+  <v-card max-width="50%" class="elevation-1 pa-3 login-card mx-auto">
     <v-card-text>
       <!--  -->
 
       <div class="layout column align-center">
-        <h1 class="flex my-4 primary--text font-weight-bold">ログイン</h1>
+        <h1 class="flex my-4 primary--text font-weight-thin">ログイン</h1>
       </div>
       <v-form ref="loginForm">
         <v-text-field
@@ -68,9 +68,9 @@ export default {
       v => (v && v.length <= 32) || "パスワードは32文字以内で入力してください。"
     ],
     model: {
-      email: "",
-      password: "",
-      password_confirmation: ""
+      email: "poke8",
+      password: "a",
+      password_confirmation: "a"
     }
   }),
 
@@ -86,23 +86,19 @@ export default {
         })
         .then(response => response.data)
         .then(object => {
-          if (object.token) {
-            alert("ログインしました");
-            const obj = {
-              name: object.name,
-              id: object.id,
-              token: object.token,
-              bio: object.bio
-            };
-            this.$cookies.set("article01", obj, {
-              path: "/",
-              maxAge: 60 * 60 * 24 * 7
-            });
+          alert("ログインしました");
+          const obj = {
+            name: object.name,
+            id: object.id,
+            token: object.token,
+            bio: object.bio
+          };
+          this.$cookies.set("article01", obj, {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 7
+          });
 
-            this.$router.push("/users");
-          } else {
-            alert("存在しないアカウントです。");
-          }
+          this.$router.push("/users");
         })
         .catch(error => {
           alert(error);

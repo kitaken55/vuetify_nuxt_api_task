@@ -11,19 +11,20 @@
           label="名前"
           type="text"
           :counter="256"
-          v-model= name
           required
+          v-model="name"
         ></v-text-field>
         <v-text-field
           append-icon="mdi-pencil-box"
           name="bio"
           label="自己紹介"
           type="text"
-          :value= bio
           :counter="256"
           required
+          v-model="bio"
         ></v-text-field>
       </v-form>
+      <p>{{ webStorage_computed }}</p>
     </v-card-text>
 
     <div class="login-btn text-right btn-margin">
@@ -33,49 +34,62 @@
 </template>
 
 <script>
-// import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
-    data() {
-      return {
-          name: this.$store.state.name,
-          bio: this.$store.state.bio
-      }
-    },
-    computed: {
-      // ...mapGetters(["getName", "getBio","getId","getToken"]),
-    },
-    methods: {
-        // editUser() {
-        //   axios.put(`https://teachapi.herokuapp.com/users/${this.$store.state.id}`,
-        //     {
-        //         "user_params": {
-        //             "name": this.name,
-        //             "bio": this.bio,
-        //         }
-        //     },
-        //     {
-        //         headers: {"Authorization": `Bearer ${this.$store.state.token}`}
-        //     }
-        //     )
-        //     .then(response => response.data)
-        //     .then(object => {
-        //         alert("編集が完了しました。");
-        //         alert(object.name);
-        //         alert(object.bio);
-
-        //         this.cangeEdit(object.name, object.bio);
-        //         this.$router.push('/users')
-        //     })
-        //     .catch(error => {
-        //         alert(error);
-        //     });
-        // },
-        // cangeEdit(name, bio) {
-        //   this.$store.commit("store/editLocalStorage",{name, bio})
-        // },
+  data() {
+    return {
+      name: "",
+      bio: ""
+    };
+  },
+  computed: {
+    webStorage_computed() {
+      const strage = this.$cookies.get("article01");
+      const json = JSON.parse(strage); //ここをreturnすることで、ちゃんとwebStorage_computed.nameとかが使える。
+      this.name = json.name; //ここでdata()のnameに代入
+      this.bio = json.bio; //ここでdata()のbioに代入
+      return json;
     }
-}
+  },
+  methods: {
+    editUser() {
+      console.log(this.webStorage_computed.id);
+      axios
+        .put(
+          `https://teachapi.herokuapp.com/users/${this.webStorage_computed.id}`,
+          {
+            user_params: {
+              name: this.name,
+              bio: this.bio
+            }
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.webStorage_computed.token}`
+            }
+          }
+        )
+        .then(response => response.data)
+        .then(object => {
+          alert("編集が完了しました。");
+          const obj = {
+            name: object.name,
+            id: object.id,
+            token: this.webStorage_computed.token, //APIで帰ってこない分、ここでcomputedからtoken持ってくる。
+            bio: object.bio
+          };
+          this.$cookies.set("article01", obj, {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 7
+          });
+          this.$router.push("/users");
+        })
+        .catch(error => {
+          alert(error);
+        });
+    }
+  }
+};
 </script>
 
 

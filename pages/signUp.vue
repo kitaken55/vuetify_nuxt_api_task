@@ -1,10 +1,9 @@
 <template>
-  <v-card class="elevation-1 pa-3 login-card">
+  <v-card max-width="50%" class="elevation-1 pa-3 login-card mx-auto">
     <v-card-text>
       <div class="layout column align-center">
         <h1 class="flex my-4 primary--text font-weight-thin">新規登録</h1>
       </div>
-      <p>{{ localStorage }}</p>
       <v-form ref="loginForm">
         <v-text-field
           append-icon="mdi-account"
@@ -57,21 +56,26 @@
         ></v-text-field>
       </v-form>
     </v-card-text>
-    <div class="login-btn">
-      <v-btn block color="primary" @click="createUsers" :loading="loading">新規登録</v-btn>
+    <div class="login-btn text-right btn-margin">
+      <v-btn color="primary" @click="createUsers" :loading="loading">新規登録</v-btn>
     </div>
   </v-card>
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
-  data:() => ({
+  data: () => ({
     loading: false,
     emailRules: [
       v => !!v || "メールアドレスは必須項目です。",
-      v => (v && v.length <= 128) || "メールアドレスは128文字以内で入力してください。",
-      v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || "メールアドレスの形式が正しくありません。"
+      v =>
+        (v && v.length <= 128) ||
+        "メールアドレスは128文字以内で入力してください。",
+      v =>
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          v
+        ) || "メールアドレスの形式が正しくありません。"
     ],
     passwordRules: [
       v => !!v || "パスワードは必須項目です。",
@@ -88,28 +92,35 @@ export default {
 
   methods: {
     createUsers() {
-        axios.post('https://teachapi.herokuapp.com/sign_up',{
-                "sign_up_user_params": {
-                    "name": this.model.name,
-                    "bio": this.model.bio,
-                    "email": this.model.email,
-                    "password": this.model.password,
-                    "password_confirmation": this.model.password_confirmation
-                }
+      axios
+        .post("https://teachapi.herokuapp.com/sign_up", {
+          sign_up_user_params: {
+            name: this.model.name,
+            bio: this.model.bio,
+            email: this.model.email,
+            password: this.model.password,
+            password_confirmation: this.model.password_confirmation
+          }
         })
         .then(response => response.data)
         .then(json => {
-                alert("ユーザーを作成しました")
-                localStorage.token = json.token;
-                localStorage.id = json.id;
-                localStorage.name = json.name;
-                localStorage.bio = json.bio;
-                this.$router.push('/users');
+          alert("ユーザーを作成しました");
+          const obj = {
+            name: json.name,
+            id: json.id,
+            token: json.token,
+            bio: json.bio
+          };
+          this.$cookies.set("article01", obj, {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 7
+          });
+          this.$router.push("/users");
         })
         .catch(error => {
-            alert(error);
+          alert(error);
         });
     }
   }
-}
+};
 </script>
