@@ -80,7 +80,7 @@ export default {
         .then(object => {
             if (object.token) {
                 alert("ログインしました");
-                this.changMessage(object.token,object.id,object.name,object.bio)
+
                 this.$router.push('/users');
             } else {
                 alert("存在しないアカウントです。");
@@ -89,14 +89,6 @@ export default {
         .catch(error => {
             alert(error);
         });
-    },
-    changMessage(token,id,name,bio) {
-        this.$store.commit("store/changeLocalStorage", {
-          token,
-          id,
-          name,
-          bio
-          });
     }
   }
 }

@@ -4,6 +4,7 @@
       <div class="layout column align-center">
         <h1 class="flex my-4 primary--text font-weight-thin">新規登録</h1>
       </div>
+      <p>{{ localStorage }}</p>
       <v-form ref="loginForm">
         <v-text-field
           append-icon="mdi-account"

@@ -19,7 +19,7 @@
           name="bio"
           label="自己紹介"
           type="text"
-          v-model= bio
+          :value= bio
           :counter="256"
           required
         ></v-text-field>
@@ -46,34 +46,53 @@ export default {
       // ...mapGetters(["getName", "getBio","getId","getToken"]),
     },
     methods: {
-        editUser() {
-            axios.put(`https://teachapi.herokuapp.com/users/${this.$store.state.id}`,
-            {
-                "user_params": {
-                    "name": this.name,
-                    "bio": this.bio,
-                }
-            },
-            {
-                headers: {"Authorization": `Bearer ${this.$store.state.token}`}
-            }
-            )
-            .then(response => response.data)
-            .then(object => {
-                alert("編集が完了しました。");
-                alert(object.name);
-                alert(object.bio);
+        // editUser() {
+        //   axios.put(`https://teachapi.herokuapp.com/users/${this.$store.state.id}`,
+        //     {
+        //         "user_params": {
+        //             "name": this.name,
+        //             "bio": this.bio,
+        //         }
+        //     },
+        //     {
+        //         headers: {"Authorization": `Bearer ${this.$store.state.token}`}
+        //     }
+        //     )
+        //     .then(response => response.data)
+        //     .then(object => {
+        //         alert("編集が完了しました。");
+        //         alert(object.name);
+        //         alert(object.bio);
 
-                this.cangeEdit(object.name, object.bio);
-                this.$router.push('/users')
-            })
-            .catch(error => {
-                alert(error);
-            });
-        },
-        cangeEdit(name, bio) {
-          this.$store.commit("store/editLocalStorage",{name, bio})
-        },
+        //         this.cangeEdit(object.name, object.bio);
+        //         this.$router.push('/users')
+        //     })
+        //     .catch(error => {
+        //         alert(error);
+        //     });
+        // },
+        // cangeEdit(name, bio) {
+        //   this.$store.commit("store/editLocalStorage",{name, bio})
+        // },
     }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
