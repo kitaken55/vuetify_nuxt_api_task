@@ -1,6 +1,8 @@
 <template>
   <v-card class="elevation-1 pa-3 login-card">
     <v-card-text>
+      <!--  -->
+
       <div class="layout column align-center">
         <h1 class="flex my-4 primary--text font-weight-bold">ログイン</h1>
       </div>
@@ -47,14 +49,19 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
-  data:() => ({
+  data: () => ({
     loading: false,
     emailRules: [
       v => !!v || "メールアドレスは必須項目です。",
-      v => (v && v.length <= 128) || "メールアドレスは128文字以内で入力してください。",
-      v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || "メールアドレスの形式が正しくありません。"
+      v =>
+        (v && v.length <= 128) ||
+        "メールアドレスは128文字以内で入力してください。",
+      v =>
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          v
+        ) || "メールアドレスの形式が正しくありません。"
     ],
     passwordRules: [
       v => !!v || "パスワードは必須項目です。",
@@ -69,27 +76,47 @@ export default {
 
   methods: {
     loginUsers() {
-        axios.post('https://teachapi.herokuapp.com/sign_in',{
-            "sign_in_user_params": {
-                "email": this.model.email,
-                "password": this.model.password,
-                "password_confirmation": this.model.password_confirmation
-            }
+      axios
+        .post("https://teachapi.herokuapp.com/sign_in", {
+          sign_in_user_params: {
+            email: this.model.email,
+            password: this.model.password,
+            password_confirmation: this.model.password_confirmation
+          }
         })
         .then(response => response.data)
         .then(object => {
-            if (object.token) {
-                alert("ログインしました");
+          if (object.token) {
+            alert("ログインしました");
+            const obj = {
+              name: object.name,
+              id: object.id,
+              token: object.token,
+              bio: object.bio
+            };
+            this.$cookies.set("article01", obj, {
+              path: "/",
+              maxAge: 60 * 60 * 24 * 7
+            });
 
-                this.$router.push('/users');
-            } else {
-                alert("存在しないアカウントです。");
-            }
-            })
+            this.$router.push("/users");
+          } else {
+            alert("存在しないアカウントです。");
+          }
+        })
         .catch(error => {
-            alert(error);
+          alert(error);
         });
     }
+  },
+  computed: {
+    article() {
+      let post;
+      if (this.article01) {
+        post = JSON.parse(this.article01);
+      }
+      return post;
+    }
   }
-}
+};
 </script>
