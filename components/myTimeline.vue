@@ -23,6 +23,7 @@
     <v-list>
       <!-- ここ@clickで投稿クリックしたとき、詳細開けるように。クリックイベントが競合してるとき、どっちも波紋が出てしまう問題あり -->
       <v-list-item v-for="item in getTimeline" :key="item.id">
+        <v-icon>mdi-account-circle</v-icon>
         <v-list-item-content disabled>
           <v-list-item v-text="item.text"></v-list-item>
         </v-list-item-content>
