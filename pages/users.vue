@@ -2,19 +2,9 @@
   <v-app>
     <v-card>
       <v-toolbar color="indigo" dark>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
         <v-toolbar-title>ユーザー一覧</v-toolbar-title>
 
         <v-spacer></v-spacer>
-
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
       </v-toolbar>
       <v-data-table :headers="headers" :items="getUsers" :items-per-page="5" class="elevation-1"></v-data-table>
     </v-card>

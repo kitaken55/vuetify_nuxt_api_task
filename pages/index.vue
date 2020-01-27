@@ -1,92 +1,124 @@
+<!--  -->
 <template>
-  <v-layout
-    column
-    justify-center
-    align-center
-  >
-    <v-flex
-      xs12
-      sm8
-      md6
-    >
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
+  <v-card max-width="50%" class="elevation-1 pa-3 login-card mx-auto content" :elevation="1">
+    <v-card-text>
+      <!--  -->
+      <div class="layout column align-center">
+        <h1 class="flex my-4 primary--text font-weight-thin">ログイン</h1>
       </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+      <v-form ref="loginForm">
+        <v-text-field
+          append-icon="mdi-email-outline"
+          name="login"
+          label="メールアドレス"
+          type="text"
+          v-model="model.email"
+          :counter="256"
+          required
+        ></v-text-field>
+        <v-text-field
+          append-icon="mdi-key"
+          name="password"
+          label="パスワード"
+          id="password"
+          type="password"
+          v-model="model.password"
+          :counter="32"
+          :rules="passwordRules"
+          required
+        ></v-text-field>
+        <v-text-field
+          append-icon="mdi-key"
+          name="password_confirmation"
+          label="パスワード再入力"
+          id="password_confirmation"
+          type="password"
+          v-model="model.password_confirmation"
+          :counter="32"
+          :rules="passwordRules"
+          required
+        ></v-text-field>
+      </v-form>
+    </v-card-text>
+
+    <div class="login-btn text-right btn-margin">
+      <!-- <v-spacer /> -->
+      <v-btn color="primary" @click="loginUsers" :loading="loading">ログイン</v-btn>
+    </div>
+  </v-card>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
+import axios from "axios";
 export default {
-  components: {
-    Logo,
-    VuetifyLogo,
+  data: () => ({
+    loading: false,
+    emailRules: [
+      v => !!v || "メールアドレスは必須項目です。",
+      v =>
+        (v && v.length <= 128) ||
+        "メールアドレスは128文字以内で入力してください。",
+      v =>
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          v
+        ) || "メールアドレスの形式が正しくありません。"
+    ],
+    passwordRules: [
+      v => !!v || "パスワードは必須項目です。",
+      v => (v && v.length <= 32) || "パスワードは32文字以内で入力してください。"
+    ],
+    model: {
+      email: "poke8",
+      password: "a",
+      password_confirmation: "a"
+    }
+  }),
+
+  methods: {
+    loginUsers() {
+      axios
+        .post("https://teachapi.herokuapp.com/sign_in", {
+          sign_in_user_params: {
+            email: this.model.email,
+            password: this.model.password,
+            password_confirmation: this.model.password_confirmation
+          }
+        })
+        .then(response => response.data)
+        .then(object => {
+          alert("ログインしました");
+          const obj = {
+            name: object.name,
+            id: object.id,
+            token: object.token,
+            bio: object.bio
+          };
+          this.$cookies.set("article01", obj, {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 7
+          });
+
+          this.$router.push("/users");
+        })
+        .catch(error => {
+          alert(error);
+        });
+    }
+  },
+  computed: {
+    article() {
+      let post;
+      if (this.article01) {
+        post = JSON.parse(this.article01);
+      }
+      return post;
+    }
   }
-}
+};
 </script>
+
+<style>
+.content {
+  margin-top: 50px;
+}
+</style>
