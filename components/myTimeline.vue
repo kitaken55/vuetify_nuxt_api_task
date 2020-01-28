@@ -22,7 +22,7 @@
       <!-- ここ@clickで投稿クリックしたとき、詳細開けるように。クリックイベントが競合してるとき、どっちも波紋が出てしまう問題あり -->
       <v-list-item v-for="item in getTimeline" :key="item.id">
         <!-- 投稿一覧 -->
-        <template id="test">
+        <div :id="`a${item.id}`">
           <v-icon>mdi-account-circle</v-icon>
           <v-list-item-content disabled>
             <v-list-item v-text="item.text"></v-list-item>
@@ -33,9 +33,12 @@
           <v-btn icon>
             <v-icon @click.stop="delete_post(item.id)">mdi-delete</v-icon>
           </v-btn>
-        </template>
+        </div>
       </v-list-item>
       <!-- 投稿一覧おわり -->
+      <v-btn icon>
+        <v-icon @click.stop="log()">ログ出す</v-icon>
+      </v-btn>
     </v-list>
   </v-card>
 </template>
@@ -61,6 +64,11 @@ export default {
     }
   },
   methods: {
+    //ここで要素取得
+    log() {
+      const test = this.$el;
+      console.log(test.querySelector("#a444"));
+    },
     edit(id, text) {
       this.editedItem.id = id;
       this.editedItem.text = text;
