@@ -21,17 +21,21 @@
     <v-list>
       <!-- ここ@clickで投稿クリックしたとき、詳細開けるように。クリックイベントが競合してるとき、どっちも波紋が出てしまう問題あり -->
       <v-list-item v-for="item in getTimeline" :key="item.id">
-        <v-icon>mdi-account-circle</v-icon>
-        <v-list-item-content disabled>
-          <v-list-item v-text="item.text"></v-list-item>
-        </v-list-item-content>
-        <v-btn icon>
-          <v-icon @click.stop="edit(item.id,item.text)">mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon @click.stop="delete_post(item.id)">mdi-delete</v-icon>
-        </v-btn>
+        <!-- 投稿一覧 -->
+        <template id="test">
+          <v-icon>mdi-account-circle</v-icon>
+          <v-list-item-content disabled>
+            <v-list-item v-text="item.text"></v-list-item>
+          </v-list-item-content>
+          <v-btn icon>
+            <v-icon @click.stop="edit(item.id,item.text)">mdi-pencil</v-icon>
+          </v-btn>
+          <v-btn icon>
+            <v-icon @click.stop="delete_post(item.id)">mdi-delete</v-icon>
+          </v-btn>
+        </template>
       </v-list-item>
+      <!-- 投稿一覧おわり -->
     </v-list>
   </v-card>
 </template>
@@ -98,6 +102,7 @@ export default {
         })
         .then(result => {
           alert("投稿を削除しました");
+          // document.getElementById(`${}`).remove();
         })
         .catch(error => {
           alert(error);

@@ -71,11 +71,6 @@ export default {
           title: "ユーザー一覧",
           to: "/users"
         },
-        // {
-        //   icon: "mdi-account",
-        //   title: "自分の投稿",
-        //   to: "/me/timeline"
-        // },
         {
           icon: "mdi-account",
           title: "みんなのタイムライン",
