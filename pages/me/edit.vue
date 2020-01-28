@@ -25,14 +25,17 @@
             v-model="bio"
           ></v-text-field>
         </v-form>
-      </v-card-text>
 
-      <div class="login-btn text-right btn-margin">
-        <v-btn color="primary" @click="editUser">編集</v-btn>
-      </div>
-      <div class="login-btn text-right btn-margin">
-        <v-btn color="primary" @click="logout">ログアウト</v-btn>
-      </div>
+        <div class="btn-margin">
+          <v-btn block color="primary" @click="editUser">編集</v-btn>
+        </div>
+        <div class="btn-margin" style="margin-top: 40px">
+          <v-btn block color="primary" @click="logout">ログアウト</v-btn>
+        </div>
+        <div class="btn-margin">
+          <v-btn block color="red" @click="deleteUser">アカウントを消す</v-btn>
+        </div>
+      </v-card-text>
     </v-card>
 
     <p class="margin-top">
@@ -55,21 +58,26 @@ export default {
     };
   },
   created() {
-    this.webStorage();
+    //ここはeditの部分に最初から文字を挿入しておくためだけの関数。addEditText
+    this.addEditText();
   },
   methods: {
-    webStorage() {
+    addEditText() {
       const strage = this.$cookies.get("article01");
-      const json = JSON.parse(strage); //ここをreturnすることで、ちゃんとwebStorage_computed.nameとかが使える。
+      const json = JSON.parse(strage); //ここをreturnすることで、ちゃんとwebStorage.nameとかが使える。
       this.name = json.name; //ここでdata()のnameに代入
       this.bio = json.bio; //ここでdata()のbioに代入
       return json;
     },
+    webStorage() {
+      const strage = this.$cookies.get("article01");
+      const json = JSON.parse(strage);
+      return json;
+    },
     editUser() {
-      console.log(this.webStorage_computed.id);
       axios
         .put(
-          `https://teachapi.herokuapp.com/users/${this.webStorage_computed.id}`,
+          `https://teachapi.herokuapp.com/users/${this.webStorage().id}`,
           {
             user_params: {
               name: this.name,
@@ -78,7 +86,7 @@ export default {
           },
           {
             headers: {
-              Authorization: `Bearer ${this.webStorage_computed.token}`
+              Authorization: `Bearer ${this.webStorage().token}`
             }
           }
         )
@@ -88,14 +96,14 @@ export default {
           const obj = {
             name: object.name,
             id: object.id,
-            token: this.webStorage_computed.token, //APIで帰ってこない分、ここでcomputedからtoken持ってくる。
+            token: this.webStorage().token, //APIで帰ってこない分、ここでmethodsからtoken持ってくる。
             bio: object.bio
           };
           this.$cookies.set("article01", obj, {
             path: "/",
             maxAge: 60 * 60 * 24 * 7
           });
-          this.$router.push("/users");
+          // this.$router.push("/users");
         })
         .catch(error => {
           alert(error);
@@ -107,6 +115,27 @@ export default {
       this.$router.push("/");
       // location.href = "/";
       this.$cookies.removeAll();
+    },
+    deleteUser() {
+      if (confirm("本当にアカウントを消しますか？")) {
+        axios
+          .delete(
+            `https://teachapi.herokuapp.com/users/${this.webStorage().id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${this.webStorage().token}`
+              }
+            }
+          )
+          .then(response => {
+            alert("アカウントが消えました。");
+            this.$cookies.removeAll();
+            this.$router.push("/");
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
     }
   }
 };
@@ -114,6 +143,10 @@ export default {
 
 
 <style>
+.btn-margin {
+  margin-top: 28px;
+}
+
 .margin-top {
   margin-top: 50px;
 }

@@ -3,14 +3,12 @@
     <div class="layout column align-center">
       <h1 class="flex my-4 primary--text font-weight-thin">自分の投稿</h1>
     </div>
-    <!-- これがダイヤログ -->
+    <!-- ダイヤログ -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
-        <v-card-text>
-          <v-container>
-            <v-text-field v-model="editedItem.text" class="text-margin" label="編集"></v-text-field>
-          </v-container>
-        </v-card-text>
+        <v-container style="padding-bottom:0;margin-bottom:0; padding-top: 30px;">
+          <v-text-field v-model="editedItem.text" class="text-margin" label="編集"></v-text-field>
+        </v-container>
 
         <v-card-actions>
           <v-spacer></v-spacer>

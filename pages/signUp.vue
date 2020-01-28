@@ -1,65 +1,71 @@
 <template>
-  <v-card max-width="50%" class="elevation-1 pa-3 login-card mx-auto">
-    <v-card-text>
-      <div class="layout column align-center">
-        <h1 class="flex my-4 primary--text font-weight-thin">新規登録</h1>
-      </div>
-      <v-form ref="loginForm">
-        <v-text-field
-          append-icon="mdi-account"
-          name="name"
-          label="名前"
-          type="text"
-          :counter="256"
-          v-model="model.name"
-          required
-        ></v-text-field>
-        <v-text-field
-          append-icon="mdi-pencil-box"
-          name="bio"
-          label="自己紹介"
-          type="text"
-          v-model="model.bio"
-          :counter="256"
-          required
-        ></v-text-field>
-        <v-text-field
-          append-icon="mdi-email-outline"
-          name="login"
-          label="メールアドレス"
-          type="text"
-          v-model="model.email"
-          :counter="256"
-          required
-        ></v-text-field>
-        <v-text-field
-          append-icon="mdi-key"
-          name="password"
-          label="パスワード"
-          id="password"
-          type="password"
-          v-model="model.password"
-          :counter="32"
-          :rules="passwordRules"
-          required
-        ></v-text-field>
-        <v-text-field
-          append-icon="mdi-key"
-          name="password_confirmation"
-          label="パスワード再入力"
-          id="password_confirmation"
-          type="password"
-          v-model="model.password_confirmation"
-          :counter="32"
-          :rules="passwordRules"
-          required
-        ></v-text-field>
-      </v-form>
-    </v-card-text>
-    <div class="login-btn text-right btn-margin">
-      <v-btn color="primary" @click="createUsers" :loading="loading">新規登録</v-btn>
-    </div>
-  </v-card>
+  <v-app>
+    <v-card width="500px" class="elevation-1 pa-3 login-card mx-auto content">
+      <v-card-text>
+        <div class="layout column align-center">
+          <h1 class="flex my-4 primary--text font-weight-thin">新規登録</h1>
+        </div>
+        <v-form ref="loginForm">
+          <v-text-field
+            append-icon="mdi-account"
+            name="name"
+            label="名前"
+            type="text"
+            :counter="256"
+            v-model="model.name"
+            required
+          ></v-text-field>
+          <v-text-field
+            append-icon="mdi-pencil-box"
+            name="bio"
+            label="自己紹介"
+            type="text"
+            v-model="model.bio"
+            :counter="256"
+            required
+          ></v-text-field>
+          <v-text-field
+            append-icon="mdi-email-outline"
+            name="login"
+            label="メールアドレス"
+            type="text"
+            v-model="model.email"
+            :counter="256"
+            required
+          ></v-text-field>
+          <v-text-field
+            append-icon="mdi-key"
+            name="password"
+            label="パスワード"
+            id="password"
+            type="password"
+            v-model="model.password"
+            :counter="32"
+            :rules="passwordRules"
+            required
+          ></v-text-field>
+          <v-text-field
+            append-icon="mdi-key"
+            name="password_confirmation"
+            label="パスワード再入力"
+            id="password_confirmation"
+            type="password"
+            v-model="model.password_confirmation"
+            :counter="32"
+            :rules="passwordRules"
+            required
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
+      <!-- <div class="btn-margin text-right"> -->
+      <v-card-actions class="margin_1">
+        <nuxt-link to="/">login</nuxt-link>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" @click="createUsers" :loading="loading">新規登録</v-btn>
+      </v-card-actions>
+      <!-- </div> -->
+    </v-card>
+  </v-app>
 </template>
 
 <script>
@@ -124,3 +130,14 @@ export default {
   }
 };
 </script>
+
+<style>
+.content {
+  margin-top: 50px;
+}
+
+.margin_1 {
+  padding: 0;
+  margin: 0 16px;
+}
+</style>
