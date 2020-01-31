@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <v-app>
-    <v-card width="500px" class="elevation-1 pa-3 login-card mx-auto content" :elevation="1">
+    <v-card width="500px" class="elevation-0 pa-3 login-card mx-auto content" :elevation="1">
       <v-card-text>
         <!--  -->
         <div class="layout column align-center">
@@ -24,17 +24,6 @@
             id="password"
             type="password"
             v-model="model.password"
-            :counter="32"
-            :rules="passwordRules"
-            required
-          ></v-text-field>
-          <v-text-field
-            append-icon="mdi-key"
-            name="password_confirmation"
-            label="パスワード再入力"
-            id="password_confirmation"
-            type="password"
-            v-model="model.password_confirmation"
             :counter="32"
             :rules="passwordRules"
             required

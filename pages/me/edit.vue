@@ -1,9 +1,11 @@
 <template>
   <v-app>
-    <v-card width="1000px" class="elevation-1 pa-3 login-card align-center mx-auto">
+    <myTimeline />
+
+    <v-card width="1000px" class="elevation-0 pa-3 login-card align-center mx-auto margin-top">
       <v-card-text>
         <div class="layout column align-center">
-          <h1 class="flex my-4 primary--text font-weight-thin">ユーザー編集</h1>
+          <h1 class="flex my-4 primary--text font-weight-thin">Edit</h1>
         </div>
         <v-form ref="loginForm">
           <v-text-field
@@ -37,10 +39,6 @@
         </div>
       </v-card-text>
     </v-card>
-
-    <p class="margin-top">
-      <myTimeline />
-    </p>
   </v-app>
 </template>
 
@@ -148,7 +146,7 @@ export default {
 }
 
 .margin-top {
-  margin-top: 50px;
+  margin-top: 25px;
 }
 </style>
 

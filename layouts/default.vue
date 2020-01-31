@@ -26,7 +26,7 @@
       </v-navigation-drawer>
       <!-- ドロワー -->
 
-      <v-app-bar :clipped-left="clipped" fixed app>
+      <v-app-bar :clipped-left="clipped" fixed app class="elevation-0">
         <v-app-bar-nav-icon @click="drawer = !drawer" />
 
         <v-toolbar-title v-text="title" />
@@ -63,7 +63,7 @@ export default {
       items: [
         {
           icon: "mdi-settings",
-          title: "設定",
+          title: "Mypage",
           to: "/me/edit"
         },
         {

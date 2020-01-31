@@ -1,7 +1,7 @@
 <template>
-  <v-card max-width="1000px" class="mx-auto">
+  <v-card width="1000px" class="mx-auto elevation-0">
     <div class="layout column align-center">
-      <h1 class="flex my-4 primary--text font-weight-thin">自分の投稿</h1>
+      <h1 class="flex my-4 primary--text font-weight-thin">My tweet</h1>
     </div>
     <!-- ダイヤログ -->
     <v-dialog v-model="dialog" max-width="500px">
@@ -19,26 +19,23 @@
     </v-dialog>
     <!-- ダイヤログここまで -->
     <v-list>
-      <!-- ここ@clickで投稿クリックしたとき、詳細開けるように。クリックイベントが競合してるとき、どっちも波紋が出てしまう問題あり -->
-      <v-list-item v-for="item in getTimeline" :key="item.id">
-        <!-- 投稿一覧 -->
-        <div :id="`a${item.id}`">
-          <v-icon>mdi-account-circle</v-icon>
-          <v-list-item-content disabled>
+      <transition-group name="fade">
+        <!-- ここ@clickで投稿クリックしたとき、詳細開けるように。クリックイベントが競合してるとき、どっちも波紋が出てしまう問題あり -->
+        <v-list-item v-for="item in getTimeline" :key="item.id">
+          <!-- 投稿一覧 -->
+          <v-layout :id="`a${item.id}`" :key="item.id">
+            <v-icon>mdi-account-circle</v-icon>
             <v-list-item v-text="item.text"></v-list-item>
-          </v-list-item-content>
-          <v-btn icon>
-            <v-icon @click.stop="edit(item.id,item.text)">mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn icon>
-            <v-icon @click.stop="delete_post(item.id)">mdi-delete</v-icon>
-          </v-btn>
-        </div>
-      </v-list-item>
+            <v-btn icon style="margin-top: 6.5px">
+              <v-icon @click.stop="edit(item.id,item.text)">mdi-pencil</v-icon>
+            </v-btn>
+            <v-btn icon style="margin-top: 6.5px">
+              <v-icon @click.stop="delete_post(item.id)">mdi-delete</v-icon>
+            </v-btn>
+          </v-layout>
+        </v-list-item>
+      </transition-group>
       <!-- 投稿一覧おわり -->
-      <v-btn icon>
-        <v-icon @click.stop="log()">ログ出す</v-icon>
-      </v-btn>
     </v-list>
   </v-card>
 </template>
@@ -64,11 +61,6 @@ export default {
     }
   },
   methods: {
-    //ここで要素取得
-    log() {
-      const test = this.$el;
-      console.log(test.querySelector("#a444"));
-    },
     edit(id, text) {
       this.editedItem.id = id;
       this.editedItem.text = text;
@@ -110,13 +102,18 @@ export default {
         })
         .then(result => {
           alert("投稿を削除しました");
-          // document.getElementById(`${}`).remove();
+          this.delete_client(id);
         })
         .catch(error => {
           alert(error);
         });
+    },
+    delete_client(id) {
+      const test = this.$el;
+      test.querySelector(`#a${id}`).parentNode.remove();
     }
   },
+
   created() {
     axios
       .get(
@@ -135,4 +132,31 @@ export default {
 </script>
 
 <style>
+/* transition-groupのみあるmoveクラス */
+.fade-move {
+  transition: transform 1s;
+}
+
+/* 現れるときの */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-to {
+  opacity: 1;
+}
+/* 消えるときの */
+.fade-leave {
+  opacity: 1;
+}
+.fade-leave-active {
+  transition: opacity 0.5s;
+  position: absolute;
+  width: 200px;
+}
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-card>
-      <v-toolbar color="indigo" dark>
+    <v-card class="elevation-0">
+      <v-toolbar class="elevation-0" color="indigo" dark>
         <v-toolbar-title>ユーザー一覧</v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -29,6 +29,7 @@ export default {
       webStorage: this.$cookies.get("article01")
     };
   },
+  props: {},
   computed: {
     webStorage_computed() {
       return JSON.parse(this.webStorage);
