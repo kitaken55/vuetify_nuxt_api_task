@@ -20,7 +20,7 @@
     <!-- ダイヤログここまで -->
     <v-list>
       <!-- transitionがうまく動かない -->
-      <transition-group name="fade">
+      <transition-group name="list" tag="p">
         <v-list-item v-for="item in getTimeline" :key="item.id">
           <!-- 投稿一覧 -->
           <v-layout :id="`a${item.id}`" :key="item.id">
@@ -132,9 +132,22 @@ export default {
 </script>
 
 <style>
+
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 /* transition-groupのみあるmoveクラス */
 .fade-move {
-  transition: transform 1s;
+  transition: transform 10s;
 }
 
 /* 現れるときの */
@@ -142,7 +155,7 @@ export default {
   opacity: 0;
 }
 .fade-enter-active {
-  transition: opacity 0.5s;
+  transition: opacity 5s;
 }
 .fade-enter-to {
   opacity: 1;
@@ -152,7 +165,7 @@ export default {
   opacity: 1;
 }
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 5s;
   position: absolute;
   width: 200px;
 }
